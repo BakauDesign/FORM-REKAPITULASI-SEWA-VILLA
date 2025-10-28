@@ -11,6 +11,7 @@ const BIAYA_FASILITAS = [
     'LAB_KOMPUTER' => 500000,
     'ASURANSI_KESEHATAN' => 150000,
     'BIMBINGAN_KARIR' => 200000,
+    'BIAYA_GEDUNG' => 100000
 ];
 ?>
 
@@ -89,10 +90,15 @@ const BIAYA_FASILITAS = [
         $nama_mhs       = htmlspecialchars($_POST['nama_mhs']);
         $pilih_fakultas = $_POST['pilih_fakultas'];
         $jumlah_sks     = (int)$_POST['jumlah_sks'];
+        $total_biaya_fasilitas = 0;
 
         // --- 2. Hitung Biaya Dasar ---
         $biaya_sks_mentah = BIAYA_SKS_STANDAR * $jumlah_sks;
-        $total_biaya_fasilitas = BIAYA_FASILITAS['LAB_KOMPUTER'] + BIAYA_FASILITAS['ASURANSI_KESEHATAN'];
+        // $total_biaya_fasilitas = BIAYA_FASILITAS['LAB_KOMPUTER'] + BIAYA_FASILITAS['ASURANSI_KESEHATAN'];
+
+        foreach (BIAYA_FASILITAS as $nama_fasilitas => $harga_fasilitas) {
+            $total_biaya_fasilitas += $harga_fasilitas;
+        }
 
         // --- 3. Hitung Diskon ---
         $diskon_persen = DISKON_PILIHAN[$pilih_fakultas];
@@ -137,7 +143,9 @@ const BIAYA_FASILITAS = [
                 <td style="color: red;">- <?= number_format($nilai_diskon, 0, ',', '.'); ?></td>
             </tr>
              <tr>
-                <td>Biaya Fasilitas (Komputer & Asuransi)</td>
+                <td>
+                    Biaya Fasilitas (Komputer, Asuransi & Biaya Gedung)
+                </td>
                 <td>Wajib</td>
                 <td><?= number_format($total_biaya_fasilitas, 0, ',', '.'); ?></td>
             </tr>
